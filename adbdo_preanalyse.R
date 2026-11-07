@@ -25,7 +25,7 @@ library(spData)
 library(countries) #pour avoir des données avec les noms de pays en français
 library(countrycode)
 
-deplacements <- st_read("../Projet/data/deplacements-presidents-republique-et-premiers-ministres-depuis-1945.geojson") %>% st_as_sf
+deplacements <- st_read("./data/deplacements-presidents-republique-et-premiers-ministres-depuis-1945.geojson") %>% st_as_sf
 monde <- world
 
 
@@ -108,7 +108,7 @@ nb_pays_etranger_par_mandat$mandat <- factor(
 
 
 # Diagramme en bâton
-ggplot(nb_pays_etranger_par_mandat,
+ggplot(nb_pays_etranger_par_mandat[!is.na(nb_pays_etranger_par_mandat$mandat),],
        mapping = aes(x=nombre_visites, 
                      y=mandat)
 ) +
@@ -136,7 +136,7 @@ nb_visite_france_pres_vs_prem <- df_visite_en_france %>%
   summarise(nombre_visites=n())
 
 
-ggplot(nb_visite_france_pres_vs_prem,
+ggplot(nb_visite_france_pres_vs_prem[!is.na(nb_visite_france_pres_vs_prem$mandat),],
        mapping = aes(x=nombre_visites, 
                      y=mandat,
                      fill = fonction)
