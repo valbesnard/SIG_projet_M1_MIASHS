@@ -1,0 +1,214 @@
+---
+title: "Pré-analyse des données"
+author: "Valentin BESNARD"
+format:
+  pdf:
+    documentclass: format
+knitr:
+  opts_chunk:
+    message: false
+    warning: false
+    echo: true
+    cache: false
+    results: false
+    fig-width: 10
+    out-width: "50%"
+    fig-align: "center"
+---
+
+```{r}
+#| label: setup
+#| echo: false
+#| show: false
+
+library(sf)
+library(tidyverse)
+library(terra)
+library(spData)
+library(dplyr)
+library(ggplot2)
+
+# Préparation des données
+deplacements <- st_read("./data.d/deplacements-presidents-republique-et-premiers-ministres-depuis-1945.geojson") %>% as_tibble()
+deplacements[["date_de_debut"]] <- as.Date(deplacements$date_de_debut)
+
+# Liste des mandats
+mandats <- as.Date(c(
+  "1959-01-08", "1966-01-08", # Charles de Gaulle, mandat 1
+  "1966-01-08", "1969-04-28", # Charles de Gaulle, mandat 2
+  "1969-06-20", "1974-04-02", # Georges Pompidou
+  "1974-05-24", "1981-05-21", # Valéry Giscard d'Estaing
+  "1981-05-21", "1988-05-21", # François Mitterrand, mandat 1
+  "1988-05-21", "1995-05-17", # François Mitterrand, mandat 2
+  "1995-05-17", "2002-05-17", # Jacques Chirac, mandat 1
+  "2002-05-17", "2007-05-16", # Jacques Chirac, mandat 2
+  "2007-05-16", "2012-05-15", # Nicolas Sarkozy
+  "2012-05-15", "2017-05-14"  # François Hollande
+))
+
+# Cadrage des déplacements
+deplacements <- deplacements[
+  deplacements$date_de_debut >= mandats[1],
+]
+deplacements <- deplacements[
+  deplacements$date_de_debut <= mandats[20],
+]
+deplacements <- deplacements[deplacements$pays != "France",] %>% as_tibble()
+```
+
+```{r}
+# Premier déplacement par mandats
+premiers_deplacements <- list()
+
+for (i in seq(1, length(mandats), by = 2)) {
+  dep <- deplacements[
+    deplacements$date_de_debut >= mandats[i] &
+    deplacements$date_de_debut < mandats[i + 1],
+  ]
+
+  if (nrow(dep) > 0) {
+    premiers_deplacements[[i]] <- dep[which.min(dep$date_de_debut), ]
+  }
+}
+
+premiers_deplacements <- dplyr::bind_rows(premiers_deplacements)
+
+premiers_deplacements[,c("individu","pays", "date_de_debut", "geometry")]
+``` 
+```{r}
+# 3-Premier déplacement par mandats
+premiers_deplacements <- list()
+
+for (i in seq(1, length(mandats), by = 2)) {
+  dep <- deplacements[
+    deplacements$date_de_debut >= mandats[i] &
+    deplacements$date_de_debut < mandats[i + 1],
+  ]
+
+  if (nrow(dep) > 0) {
+    premiers_deplacements[[i]] <- dep[
+      head(order(dep$date_de_debut), 3),
+    ]
+  }
+}
+
+premiers_deplacements <- dplyr::bind_rows(premiers_deplacements)
+
+premiers_deplacements[,c("individu","pays", "date_de_debut", "geometry")]
+``` 
+
+
+```{r}
+# 3-Premier déplacement par mandats
+premiers_deplacements <- list()
+
+for (i in seq(1, length(mandats), by = 2)) {
+  dep <- deplacements[
+    deplacements$date_de_debut >= mandats[i] &
+    deplacements$date_de_debut < mandats[i + 1],
+  ]
+
+  if (nrow(dep) > 0) {
+    premiers_deplacements[[i]] <- dep[
+      head(order(dep$date_de_debut), 3),
+    ]
+  }
+}
+
+premiers_deplacements <- dplyr::bind_rows(premiers_deplacements)
+
+premiers_deplacements[,c("individu","pays", "date_de_debut", "geometry")]
+``` 
+
+
+```{r}
+# Premier pays visité chaque année
+premier_pays_annee <- deplacements %>%
+  mutate(annee = as.integer(format(date_de_debut, "%Y"))) %>%
+  filter(!is.na(date_de_debut)) %>%
+  arrange(date_de_debut) %>%
+  group_by(annee) %>%
+  slice_head(n = 1) %>%
+  ungroup() %>%
+  select(annee, pays, date_de_debut, individu)
+
+premier_pays_annee
+```
+
+
+```{r}
+# Nombre de visites par pays et par année
+visites_par_annee <- deplacements %>%
+  mutate(annee = as.integer(format(date_de_debut, "%Y"))) %>%
+  filter(!is.na(date_de_debut)) %>%
+  count(annee, pays, name = "nb_visites")
+
+# Top 3 des pays visités par année
+top3_pays_annee <- visites_par_annee %>%
+  group_by(annee) %>%
+  slice_max(
+    order_by = nb_visites,
+    n = 3,
+    with_ties = FALSE
+  ) %>%
+  ungroup() %>%
+  arrange(annee, desc(nb_visites))
+
+top3_pays_annee
+```
+
+
+```{r}
+# Top 3 des pays les plus visités sur la période
+top3_pays <- deplacements %>%
+  filter(!is.na(pays), pays != "NA") %>%
+  count(pays, name = "nb_visites") %>%
+  slice_max(
+    order_by = nb_visites,
+    n = 3,
+    with_ties = FALSE
+  ) %>%
+  arrange(desc(nb_visites))
+
+top3_pays
+```
+
+
+```{r}
+# Répartition annuelle des visites pour les 3 pays
+repartition_top3 <- deplacements %>%
+  mutate(annee = as.integer(format(date_de_debut, "%Y"))) %>%
+  filter(pays %in% top3_pays$pays) %>%
+  count(annee, pays, name = "nb_visites") %>%
+  tidyr::complete(
+    annee = 1959:2017,
+    pays,
+    fill = list(nb_visites = 0)
+  )
+
+repartition_top3
+```
+
+
+```{r}
+ggplot(
+  repartition_top3,
+  aes(
+    x = annee,
+    y = nb_visites,
+    fill = pays
+  )
+) +
+  geom_col(position = "dodge") +
+  scale_x_continuous(
+    breaks = seq(1960, 2015, by = 5)
+  ) +
+  labs(
+    title = "Évolution des visites dans les trois pays les plus visités",
+    subtitle = "Période 1959-2017",
+    x = "Année",
+    y = "Nombre de déplacements",
+    fill = "Pays"
+  ) +
+  theme_minimal()
+```
