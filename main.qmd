@@ -1,0 +1,44 @@
+---
+title: "Analyse des relations internationales de la France à travers les déplacements à l'étranger par le président et le premier ministre"
+author: "Alec De Bonet d'Oleon, Valentin BESNARD"
+format:
+  pdf:
+    documentclass: format
+knitr:
+  opts_chunk:
+    message: false
+    warning: false
+    echo: true
+    cache: false
+    results: false
+    fig-width: 10
+    out-width: "50%"
+    fig-align: "center"
+---
+
+```{r}
+#| label: setup
+#| echo: false
+#| show: false
+
+source("./code.d/import_packages.R")
+```
+
+# Présentation générale
+
+Nous analyserons les relations internationales de la France à travers les déplacements à l'étranger des présidents et premiers ministres sous la Vème République de 1959 à 2017.
+
+Ce projet s'inscrit dans le cadre du module de "Spatial Statistics" réalisé en première année de Master MIASHS à l'université Lyon 2 afin de montrer notre capacité à mettre en application les enseignants du module sur les packages R "simple features" et "terra".
+
+Ce projet repose essentiellement sur le jeu de données mis à disposition sur data.gouv.fr sur les déplacements des présidents de la République et des premiers ministres depuis 1945.
+
+**Insérer le graphique**
+
+Sur notre jeu de données, on constate que le Premier ministre monopolise les déplacements en France et le Président les déplacements à l'étranger. Notre analyse se concentrera sur deux échelles de temps, les déplacements au niveau annuel ou les déplacements effectués sur les mandats présidentiels.
+
+Sur la période étudiée, les cartes du monde ont beaucoup évolué, et donc les déplacements aussi, entre les mouvements de décolonisation, la fin de la guerre froide et l'explosion du bloc communiste, la dislocation de la Yougoslavie... Se faisant, pour les cartes que nous réaliserons, nos cartes en séparent deux périodes : pré-1991 et post-1991.
+
+
+# Conclusion
+
+
