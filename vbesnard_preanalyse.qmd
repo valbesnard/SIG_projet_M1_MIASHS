@@ -57,7 +57,7 @@ deplacements <- deplacements[deplacements$pays != "France",] %>% as_tibble()
 ```
 
 ```{r}
-# Premier déplacement par mandats
+# Premier déplacement par mandats # Anomalie, mitterrand 3 fois
 premiers_deplacements <- list()
 
 for (i in seq(1, length(mandats), by = 2)) {
@@ -75,29 +75,6 @@ premiers_deplacements <- dplyr::bind_rows(premiers_deplacements)
 
 premiers_deplacements[,c("individu","pays", "date_de_debut", "geometry")]
 ``` 
-```{r}
-# 3-Premier déplacement par mandats
-premiers_deplacements <- list()
-
-for (i in seq(1, length(mandats), by = 2)) {
-  dep <- deplacements[
-    deplacements$date_de_debut >= mandats[i] &
-    deplacements$date_de_debut < mandats[i + 1],
-  ]
-
-  if (nrow(dep) > 0) {
-    premiers_deplacements[[i]] <- dep[
-      head(order(dep$date_de_debut), 3),
-    ]
-  }
-}
-
-premiers_deplacements <- dplyr::bind_rows(premiers_deplacements)
-
-premiers_deplacements[,c("individu","pays", "date_de_debut", "geometry")]
-``` 
-
-
 ```{r}
 # 3-Premier déplacement par mandats
 premiers_deplacements <- list()
@@ -165,7 +142,7 @@ top3_pays <- deplacements %>%
   count(pays, name = "nb_visites") %>%
   slice_max(
     order_by = nb_visites,
-    n = 3,
+    n = 10,
     with_ties = FALSE
   ) %>%
   arrange(desc(nb_visites))

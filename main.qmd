@@ -22,23 +22,89 @@ knitr:
 #| show: false
 
 source("./code.d/import_packages.R")
+source("./code.d/préparation_données.R")
 ```
 
-# Présentation générale
+# I. Présentation générale
 
-Nous analyserons les relations internationales de la France à travers les déplacements à l'étranger des présidents et premiers ministres sous la Vème République de 1959 à 2017.
+Nous analyserons dans ce document les relations internationales de la France à travers les déplacements à l'étranger des présidents et premiers ministres sous la Vème République de 1959 à 2017.
 
 Ce projet s'inscrit dans le cadre du module de "Spatial Statistics" réalisé en première année de Master MIASHS à l'université Lyon 2 afin de montrer notre capacité à mettre en application les enseignants du module sur les packages R "simple features" et "terra".
 
 Ce projet repose essentiellement sur le jeu de données mis à disposition sur data.gouv.fr sur les déplacements des présidents de la République et des premiers ministres depuis 1945.
 
-**Insérer le graphique**
+```{r}
+#| echo: false
+#| output: true
+#| fig-width: 10
+#| fig-height: 8
+#| fig-dpi: 450
+#| out-width: 100%
 
-Sur notre jeu de données, on constate que le Premier ministre monopolise les déplacements en France et le Président les déplacements à l'étranger. Notre analyse se concentrera sur deux échelles de temps, les déplacements au niveau annuel ou les déplacements effectués sur les mandats présidentiels.
+source("./code.d/graphique_repartition_ministre_president.R")
+```
+
+Sur notre jeu de données, on constate que le Premier ministre monopolise les déplacements en France et le Président les déplacements à l'étranger. Notre analyse se concentrera sur deux granularité de temps, les déplacements au niveau annuel ou les déplacements effectués sur les mandats présidentiels.
 
 Sur la période étudiée, les cartes du monde ont beaucoup évolué, et donc les déplacements aussi, entre les mouvements de décolonisation, la fin de la guerre froide et l'explosion du bloc communiste, la dislocation de la Yougoslavie... Se faisant, pour les cartes que nous réaliserons, nos cartes en séparent deux périodes : pré-1991 et post-1991.
 
+# II.
+
+# III. Quels sont les relations prioritaires à chaque nouveaux mandats
+
+Les premiers pays visités à chaque nouveau mandat permet au président d'exprimer ses priorités concernant les relations internationales.
+
+```{r}
+#| echo: false
+#| output: true
+#| fig-width: 10
+#| fig-height: 8
+#| fig-dpi: 450
+#| out-width: 100%
+
+source("./code.d/carte_pays_prioritaire_mandats.R")
+```
+
+# IV. Le nombre de pays visité pour chaque année (graphique)
+
+```{r}
+#| echo: false
+#| output: true
+#| fig-width: 10
+#| fig-height: 8
+#| fig-dpi: 450
+#| out-width: 100%
+
+source("./code.d/graphique_nombre_pays_mandats.R")
+```
+
+
+# V.Nombre de fois qu'un pays a été visité en premier par année (graphique)
+
+a) pré-91
+
+```{r}
+#| echo: false
+#| output: true
+#| fig-width: 10
+#| fig-height: 8
+#| fig-dpi: 450
+#| out-width: 100%
+
+source("./code.d/graphique_nb_visite_1er_pays_pré_91.R")
+```
+
+b) post-91
+
+```{r}
+#| echo: false
+#| output: true
+#| fig-width: 10
+#| fig-height: 8
+#| fig-dpi: 450
+#| out-width: 100%
+
+source("./code.d/graphique_nb_visite_1er_pays_post_91.R")
+```
 
 # Conclusion
-
-
