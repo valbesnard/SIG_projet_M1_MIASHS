@@ -37,31 +37,31 @@ deplacements <- deplacements %>%
     mandat = case_when(
       
       date >= as.Date("1959-01-08") & date < as.Date("1966-01-08") ~
-        "Mandat 1 - Charles de Gaulle",
+        "Mandat 01 - Charles de Gaulle",
       
       date >= as.Date("1966-01-08") & date < as.Date("1969-04-28") ~
-        "Mandat 2 - Charles de Gaulle",
+        "Mandat 02 - Charles de Gaulle",
       
       date >= as.Date("1969-06-20") & date < as.Date("1974-04-02") ~
-        "Mandat 3 - Georges Pompidou",
+        "Mandat 03 - Georges Pompidou",
       
       date >= as.Date("1974-05-27") & date < as.Date("1981-05-21") ~
-        "Mandat 4 - Valéry Giscard d'Estaing",
+        "Mandat 04 - Valéry Giscard d'Estaing",
       
       date >= as.Date("1981-05-21") & date < as.Date("1988-05-21") ~
-        "Mandat 5 - François Mitterrand",
+        "Mandat 05 - François Mitterrand",
       
       date >= as.Date("1988-05-21") & date < as.Date("1995-05-17") ~
-        "Mandat 6 - François Mitterrand",
+        "Mandat 06 - François Mitterrand",
       
       date >= as.Date("1995-05-17") & date < as.Date("2002-05-17") ~
-        "Mandat 7 - Jacques Chirac",
+        "Mandat 07 - Jacques Chirac",
       
       date >= as.Date("2002-05-17") & date < as.Date("2007-05-16") ~
-        "Mandat 8 - Jacques Chirac",
+        "Mandat 08 - Jacques Chirac",
       
       date >= as.Date("2007-05-16") & date < as.Date("2012-05-15") ~
-        "Mandat 9 - Nicolas Sarkozy",
+        "Mandat 09 - Nicolas Sarkozy",
       
       date >= as.Date("2012-05-15") & date < as.Date("2017-05-14") ~
         "Mandat 10 - François Hollande",
