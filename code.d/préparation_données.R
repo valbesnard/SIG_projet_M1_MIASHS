@@ -47,3 +47,12 @@ deplacements <- deplacements %>%
 
 deplacements_etranger <- deplacements[deplacements$pays != "France",] %>% as_tibble()
 monde <- world
+
+deplacements_sf <- st_as_sf(deplacements, sf_column_name = "geometry")
+
+nb_visite_par_pays <- deplacements_sf %>% 
+  group_by(pays, code_pays) %>% 
+  summarise(nombre_de_visite = n(),
+            geometry = first(geometry),
+            .groups = "drop") %>% 
+  arrange(desc(nombre_de_visite))
